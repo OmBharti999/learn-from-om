@@ -32,9 +32,17 @@ export const SidebarItem = ({ href, icon: Icon, label }: Props) => {
       )}
     >
       <div className="flex items-center gap-x-2 py-4">
-        <Icon className={cn("h-5 w-5")} />
+        <Icon
+          size={22}
+          className={cn("h-5 w-5 text-slate-500", {
+            isActive: "text-sky-700",
+          })}
+        />
         <span>{label}</span>
       </div>
+      <div className={cn(`ml-auto opacity-0 border-2 border-sky-700 h-full transition-all`,{
+        isActive: "opacity-100"
+      })}></div>
     </button>
   );
 };
