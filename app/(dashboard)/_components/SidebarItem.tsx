@@ -26,8 +26,8 @@ export const SidebarItem = ({ href, icon: Icon, label }: Props) => {
       className={cn(
         `flex items-center px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`,
         {
-          isActive:
-            "text-sky-700 bg-sky-200/20 hover:bg-sky-200/30 hover:text-sky-700",
+          "text-sky-700 bg-sky-200/20 hover:bg-sky-200/30 hover:text-sky-700":
+            isActive,
         }
       )}
     >
@@ -35,14 +35,19 @@ export const SidebarItem = ({ href, icon: Icon, label }: Props) => {
         <Icon
           size={22}
           className={cn("h-5 w-5 text-slate-500", {
-            isActive: "text-sky-700",
+            "text-sky-700": isActive,
           })}
         />
         <span>{label}</span>
       </div>
-      <div className={cn(`ml-auto opacity-0 border-2 border-sky-700 h-full transition-all`,{
-        isActive: "opacity-100"
-      })}></div>
+      <div
+        className={cn(
+          `ml-auto opacity-0 border-2 border-sky-700 h-full transition-all`,
+          {
+            "opacity-100": isActive,
+          }
+        )}
+      ></div>
     </button>
   );
 };
