@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import { Layout, Compass } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
