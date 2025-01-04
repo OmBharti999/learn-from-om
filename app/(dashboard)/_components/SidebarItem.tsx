@@ -19,14 +19,15 @@ export const SidebarItem = ({ href, icon: Icon, label }: Props) => {
   const onClick = () => {
     router.push(href);
   };
+
   return (
     <button
       onClick={onClick}
       type="button"
       className={cn(
-        `flex items-center px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground`,
+        `flex items-center gap-x-2 text-slate-500 text-sm font-medium pl-6 transition-all hover:bg-slate-300/20  hover:text-slate-600`,
         {
-          "text-sky-700 bg-sky-200/20 hover:bg-sky-200/30 hover:text-sky-700":
+          "text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700":
             isActive,
         }
       )}

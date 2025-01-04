@@ -11,13 +11,14 @@ const guestRoutes = [
   },
   {
     icon: Compass,
-    label: " Browse",
+    label: "Browse",
     href: "/search",
   },
 ];
 
 export const SidebarRoutes = () => {
   const routes = guestRoutes;
+
   return (
     <div className="flex flex-col w-full">
       {routes.map((route) => (
