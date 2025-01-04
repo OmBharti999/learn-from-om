@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -40,9 +41,11 @@ const CreatePage = () => {
     console.log(values);
     try {
         const response = await axios.post("/api/course", values)
+        toast.success("Course created")
         router.push(`/teacher/courses/${response.data.id}`)
     } catch (error) {
         console.log(error)
+        toast.error("Something went wrong")
     }
   };
 
