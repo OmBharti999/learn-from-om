@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { Pencil } from "lucide-react";
+import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,9 @@ import { updateCourse } from "@/actions/courses";
 import { cn } from "@/lib/utils";
 
 import type { Course } from "@prisma/client";
+import Image from "next/image";
+import { FileUploader } from "@/components/shared/file-uploader";
+import { url } from "inspector";
 
 interface Props {
   initialData: Course;
@@ -71,53 +74,49 @@ export const ImageForm = ({ courseId, initialData }: Props) => {
       <div className="font-medium flex items-center justify-between">
         Course image
         <Button variant={`ghost`} onClick={toggleEditing}>
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
+          {isEditing && <>Cancel</>}
+          {!isEditing && initialData.imageUrl ? (
             <>
               <Pencil className="h-4 w-4" />
               Edit image
             </>
+          ) : (
+            <>
+              <PlusCircle className="h-4 w-4" />
+              Add an image
+            </>
           )}
         </Button>
       </div>
-      {isEditing ? (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'This course is about...'"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
+      {!isEditing && initialData.imageUrl ? (
+        <div className="relative aspect-video mt-2">
+          <Image
+            src={initialData.imageUrl}
+            alt="Uplaod Course image"
+            fill
+            className="rounded-md object-cover"
+          />
+        </div>
       ) : (
-        <p
-          className={cn(`text-sm mt-2`, {
-            "text-slate-500 italic": !initialData.description,
-          })}
+        <div
+          className={cn(
+            `flex items-center justify-center h-60 bg-slate-200 rounded-md`
+          )}
         >
-          {initialData.imageUrl ?? "No description"}
-        </p>
+          <ImageIcon className="h-10 w-10 text-slate-500" />
+        </div>
+      )}
+
+      {isEditing && (
+        <div className="">
+          <FileUploader
+            endpoint="courseImage"
+            onChange={(url) => {
+              if (url) onSubmit({ imageUrl: url });
+            }}
+          />
+          <div className="text-sm text-muted-foreground mt-4">16:9 aspect ratio recommended</div>
+        </div>
       )}
     </div>
   );

@@ -12,14 +12,16 @@ interface FileUploaderProps {
 }
 
 export function FileUploader({ endpoint, onChange }: FileUploaderProps) {
-  <UploadDropzone
-    endpoint={endpoint}
-    onClientUploadComplete={(res) => {
-      onChange(res?.[0].url);
-    }}
-    onUploadError={(error) => {
-      if (typeof error === "string") toast.error(error);
-      else toast.error(`${error?.message}`);
-    }}
-  />;
+  return (
+    <UploadDropzone
+      endpoint={endpoint}
+      onClientUploadComplete={(res) => {
+        onChange(res?.[0].url);
+      }}
+      onUploadError={(error) => {
+        if (typeof error === "string") toast.error(error);
+        else toast.error(`${error?.message}`);
+      }}
+    />
+  );
 }
