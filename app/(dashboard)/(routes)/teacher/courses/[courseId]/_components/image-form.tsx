@@ -75,37 +75,39 @@ export const ImageForm = ({ courseId, initialData }: Props) => {
         Course image
         <Button variant={`ghost`} onClick={toggleEditing}>
           {isEditing && <>Cancel</>}
-          {!isEditing && initialData.imageUrl ? (
-            <>
-              <Pencil className="h-4 w-4" />
-              Edit image
-            </>
-          ) : (
-            <>
-              <PlusCircle className="h-4 w-4" />
-              Add an image
-            </>
-          )}
+          {!isEditing &&
+            (initialData.imageUrl ? (
+              <>
+                <Pencil className="h-4 w-4" />
+                Edit image
+              </>
+            ) : (
+              <>
+                <PlusCircle className="h-4 w-4" />
+                Add an image
+              </>
+            ))}
         </Button>
       </div>
-      {!isEditing && initialData.imageUrl ? (
-        <div className="relative aspect-video mt-2">
-          <Image
-            src={initialData.imageUrl}
-            alt="Uplaod Course image"
-            fill
-            className="rounded-md object-cover"
-          />
-        </div>
-      ) : (
-        <div
-          className={cn(
-            `flex items-center justify-center h-60 bg-slate-200 rounded-md`
-          )}
-        >
-          <ImageIcon className="h-10 w-10 text-slate-500" />
-        </div>
-      )}
+      {!isEditing &&
+        (initialData.imageUrl ? (
+          <div className="relative aspect-video mt-2">
+            <Image
+              src={initialData.imageUrl}
+              alt="Uplaod Course image"
+              fill
+              className="rounded-md object-cover"
+            />
+          </div>
+        ) : (
+          <div
+            className={cn(
+              `flex items-center justify-center h-60 bg-slate-200 rounded-md`
+            )}
+          >
+            <ImageIcon className="h-10 w-10 text-slate-500" />
+          </div>
+        ))}
 
       {isEditing && (
         <div className="">
@@ -115,7 +117,9 @@ export const ImageForm = ({ courseId, initialData }: Props) => {
               if (url) onSubmit({ imageUrl: url });
             }}
           />
-          <div className="text-sm text-muted-foreground mt-4">16:9 aspect ratio recommended</div>
+          <div className="text-sm text-muted-foreground mt-4">
+            16:9 aspect ratio recommended
+          </div>
         </div>
       )}
     </div>
