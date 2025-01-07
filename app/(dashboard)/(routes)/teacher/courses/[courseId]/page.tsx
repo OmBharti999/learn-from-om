@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
-import { DescriptionForm, TitleForm } from "./_components";
+import { DescriptionForm, TitleForm, ImageForm } from "./_components";
 
 import { db } from "@/lib/db";
 
@@ -58,6 +58,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
           <TitleForm initialData={course} courseId={courseId} />
           <DescriptionForm initialData={course} courseId={courseId} />
+          <ImageForm initialData={course} courseId={courseId} />
         </div>
       </div>
     </div>
