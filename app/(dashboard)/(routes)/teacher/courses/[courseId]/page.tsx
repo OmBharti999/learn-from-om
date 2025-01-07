@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
-import { TitleForm } from "./_components/title-form";
+import { DescriptionForm, TitleForm } from "./_components";
 
 import { db } from "@/lib/db";
 
@@ -57,6 +57,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             <h2 className="text-xl">Customize your course</h2>
           </div>
           <TitleForm initialData={course} courseId={courseId} />
+          <DescriptionForm initialData={course} courseId={courseId} />
         </div>
       </div>
     </div>
