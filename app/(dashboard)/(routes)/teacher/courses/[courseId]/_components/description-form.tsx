@@ -19,26 +19,31 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { updateCourse } from "@/actions/courses";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   initialData: {
-    title: string;
+    description: string | null;
   };
   courseId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
+  description: z
+    .string()
+    .min(1, {
+      message: "Description is required",
+    })
+    .optional(),
 });
 
-export const TitleForm = ({ courseId, initialData }: Props) => {
+export const DescriptionForm = ({ courseId, initialData }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: { description: initialData.description ?? undefined },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -50,9 +55,7 @@ export const TitleForm = ({ courseId, initialData }: Props) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // console.log("🚀 ~ onSubmit ~ values:", values);
     try {
-      // await axios.patch(`/api/courses/${courseId}`, values);
       const course = await updateCourse(courseId, values);
-      // console.log("🚀 ~ onSubmit ~ course:", course);
       if ((course as { error: string })?.error)
         toast.error((course as { error: string }).error);
       else {
@@ -64,17 +67,18 @@ export const TitleForm = ({ courseId, initialData }: Props) => {
       toast.error("Something went wrong");
     }
   };
+
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course title
+        Course description
         <Button variant={`ghost`} onClick={toggleEditing}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4" />
-              Edit title
+              Edit description
             </>
           )}
         </Button>
@@ -87,18 +91,14 @@ export const TitleForm = ({ courseId, initialData }: Props) => {
           >
             <FormField
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  {/* <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                    Course title
-                  </FormLabel> */}
                   <FormControl>
-                    <Input
+                    <Textarea
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="e.g. 'This course is about...'"
                       {...field}
-                      // className="bg-zinc-300/50 border-zinc-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormControl>
                   <FormMessage />
@@ -113,7 +113,13 @@ export const TitleForm = ({ courseId, initialData }: Props) => {
           </form>
         </Form>
       ) : (
-        <p className="text-sm mt-2">{initialData.title}</p>
+        <p
+          className={cn(`text-sm mt-2`, {
+            "text-slate-500 italic": !initialData.description,
+          })}
+        >
+          {initialData.description ?? "No description"}
+        </p>
       )}
     </div>
   );
