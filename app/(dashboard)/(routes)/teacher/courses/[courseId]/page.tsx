@@ -1,12 +1,15 @@
-import { db } from "@/lib/db";
+import { LayoutDashboard } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-const CourseIdPage = async ({
-  params: { courseId },
-}: {
-  params: { courseId: string };
-}) => {
+import { IconBadge } from "@/components/shared/icon-badge";
+import { TitleForm } from "./_components/title-form";
+
+import { db } from "@/lib/db";
+
+const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+  // await is needed getting warning about asynchronous access of `params.courseId`
+  const { courseId } = await params;
   const { userId } = await auth();
 
   if (!userId) {
@@ -48,7 +51,13 @@ const CourseIdPage = async ({
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 ">
-        <h2 className="text-xl">Customize your course</h2>
+        <div className="">
+          <div className="flex items-center gap-x-2">
+            <IconBadge icon={LayoutDashboard} />
+            <h2 className="text-xl">Customize your course</h2>
+          </div>
+          <TitleForm initialData={course} courseId={courseId} />
+        </div>
       </div>
     </div>
   );
