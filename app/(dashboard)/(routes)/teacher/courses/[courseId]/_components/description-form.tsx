@@ -1,31 +1,29 @@
 "use client";
 
 import { z } from "zod";
-// import axios from "axios";
+import { useState } from "react";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import type { Course } from "@prisma/client";
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+
 import { updateCourse } from "@/actions/courses";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
+
 
 interface Props {
-  initialData: {
-    description: string | null;
-  };
+  initialData: Course;
   courseId: string;
 }
 
