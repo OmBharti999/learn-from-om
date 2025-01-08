@@ -3,27 +3,15 @@
 import { z } from "zod";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import Image from "next/image";
+import type { Course } from "@prisma/client";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { FileUploader } from "@/components/shared/file-uploader";
 
 import { updateCourse } from "@/actions/courses";
 import { cn } from "@/lib/utils";
-
-import type { Course } from "@prisma/client";
-import Image from "next/image";
-import { FileUploader } from "@/components/shared/file-uploader";
-import { url } from "inspector";
 
 interface Props {
   initialData: Course;
@@ -42,19 +30,11 @@ const formSchema = z.object({
 export const ImageForm = ({ courseId, initialData }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { imageUrl: initialData.imageUrl ?? undefined },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
   const toggleEditing = () => {
     setIsEditing((prev) => !prev);
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // console.log("🚀 ~ onSubmit ~ values:", values);
     try {
       const course = await updateCourse(courseId, values);
       if ((course as { error: string })?.error)
