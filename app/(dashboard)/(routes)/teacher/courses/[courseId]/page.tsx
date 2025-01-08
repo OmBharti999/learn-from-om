@@ -3,9 +3,51 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
-import { DescriptionForm, TitleForm, ImageForm } from "./_components";
+import {
+  DescriptionForm,
+  TitleForm,
+  ImageForm,
+  CategoryForm,
+} from "./_components";
 
 import { db } from "@/lib/db";
+
+// const populateCategories = async () => {
+//   const categories = await db.category.findMany({
+//     orderBy: {
+//       name: "asc",
+//     },
+//   });
+//   const category = [
+//     {
+//       name: "Computer Science",
+//     },
+//     {
+//       name: "Music",
+//     },
+//     {
+//       name: "Fitness",
+//     },
+//     {
+//       name: "Photography",
+//     },
+//     {
+//       name: "Engineering",
+//     },
+//     {
+//       name: "Accounting",
+//     },
+//     {
+//       name: "Filming",
+//     },
+//   ];
+
+//   if (categories.length === 0) {
+//     await db.category.createMany({
+//       data: category,
+//     });
+//   }
+// };
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   // await is needed getting warning about asynchronous access of `params.courseId`
@@ -20,6 +62,17 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
       id: courseId,
     },
   });
+
+  const categories = (
+    await db.category.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    })
+  ).map(({ id, name }) => ({
+    label: name,
+    value: id,
+  }));
 
   if (
     !course
@@ -59,6 +112,11 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           <TitleForm initialData={course} courseId={courseId} />
           <DescriptionForm initialData={course} courseId={courseId} />
           <ImageForm initialData={course} courseId={courseId} />
+          <CategoryForm
+            initialData={course}
+            courseId={courseId}
+            options={categories}
+          />
         </div>
       </div>
     </div>
