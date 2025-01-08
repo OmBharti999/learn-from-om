@@ -12,8 +12,8 @@ model Course {
   id          String  @id @default(uuid())
   userId      String
   title       String  @db.Text
-  description String?  @db.Text
-  imageUrl    String?  @db.Text
+  description String? @db.Text
+  imageUrl    String? @db.Text
   price       Float?
   isPublished Boolean @default(false)
 
@@ -21,6 +21,8 @@ model Course {
   Category   Category? @relation(fields: [categoryId], references: [id])
 
   attachments Attachment[]
+  chapter     Chapter[]
+  purchases   Purchase[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,6 +41,72 @@ model Attachment {
 
   courseId String
   Course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chapter {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  videoUrl    String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+  isFree      Boolean @default(false)
+
+  muxData MuxData?
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+
+  userProgress UserProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MuxData {
+  id         String  @id @default(uuid())
+  assetId    String
+  playbackId String? @db.Text
+
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String  @unique
+}
+
+model UserProgress {
+  id     String @id @default(uuid())
+  userId String
+
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String
+
+  isCompleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+}
+
+model Purchase {
+  id     String @id @default(uuid())
+  userId String
+
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StripeCustomer {
+  id     String @id @default(uuid())
+  userId String @unique
+
+
+  stripeCustomerId String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
