@@ -1,4 +1,4 @@
-import { LayoutDashboard } from "lucide-react";
+import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -8,6 +8,7 @@ import {
   TitleForm,
   ImageForm,
   CategoryForm,
+  PriceForm,
 } from "./_components";
 
 import { db } from "@/lib/db";
@@ -117,6 +118,27 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             courseId={courseId}
             options={categories}
           />
+        </div>
+        <div className="space-y-6">
+          <div className="">
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h2 className="text-xl">Course chapters</h2>
+            </div>
+            <div className="">
+              [todo] chapters
+            </div>
+          </div>
+          <div className="">
+
+          <div className="flex items-center gap-x-2">
+          <IconBadge icon={CircleDollarSign}/>
+          <h2 className="text-xl">Sell Your Course</h2>
+          </div>
+          <PriceForm initialData={course} courseId={courseId} />
+
+
+          </div>
         </div>
       </div>
     </div>
