@@ -69,3 +69,33 @@ export const deleteAttachment = async (attachmentId: string) => {
     return returnError("Something went wrong");
   }
 };
+
+export const createChapter = async (courseId: string, data: any) => {
+  let lastChapter;
+  try {
+    lastChapter = await db.chapter.findFirst({
+      where: {
+        courseId,
+      },
+      orderBy: {
+        position: "desc",
+      },
+    });
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+  const position = lastChapter ? lastChapter.position + 1 : 1;
+  try {
+    const chapter = await db.chapter.create({
+      data: {
+        courseId,
+        title: data.title,
+        position,
+      },
+    });
+    revalidatePath(`/teacher/courses/${courseId}`);
+    return chapter;
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
