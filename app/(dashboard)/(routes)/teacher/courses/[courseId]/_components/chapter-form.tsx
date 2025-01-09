@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Pencil, PlusCircle } from "lucide-react";
+import { Loader2, PlusCircle } from "lucide-react";
 
 import { createChapter, updateChaptersPosition } from "@/actions/courses";
 import { cn } from "@/lib/utils";
@@ -65,24 +65,33 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
+      setIsUpdating(true);
       const chapters = await updateChaptersPosition({
         courseId,
         data: updateData,
       });
       if ((chapters as { error: string })?.error)
         toast.error((chapters as { error: string }).error);
-        // toast.error((chapters as { error: string }).error);
+      // toast.error((chapters as { error: string }).error);
       else {
         toast.success("Chapter reordered");
       }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+      {isUpdating && (
+        <div className="absolute h-full w-full bg-slate-500/20 top-0 left-0 rounded-md flex items-center justify-center font-medium py-2">
+          <Loader2 className="h-6 w-6 animate-spin text-sky-700" />
+          {/* <span>Updating...</span> */}
+        </div>
+      )}
       <div className="font-medium flex items-center justify-between">
         Course chapters
         <Button variant={`ghost`} onClick={toggleCreating}>

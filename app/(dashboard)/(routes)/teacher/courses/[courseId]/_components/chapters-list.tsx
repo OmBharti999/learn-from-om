@@ -34,7 +34,7 @@ export const ChaptersList = ({
 
   const debouncedReorder = useDebouncedCallback((updatedOrderedChapters) => {
     onReorder(updatedOrderedChapters);
-  }, 2000);
+  }, 1000);
 
   useEffect(() => {
     const oldOrderedChapters = items.map(({ id }, index) => {
