@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Pencil, PlusCircle } from "lucide-react";
 
-import { createChapter } from "@/actions/courses";
+import { createChapter, updateChaptersPosition } from "@/actions/courses";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { ChaptersList } from "./chapters-list";
@@ -56,6 +56,24 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
       else {
         toast.success("Chapter created");
         toggleCreating();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const onReorder = async (updateData: { id: string; position: number }[]) => {
+    try {
+      const chapters = await updateChaptersPosition({
+        courseId,
+        data: updateData,
+      });
+      if ((chapters as { error: string })?.error)
+        toast.error((chapters as { error: string }).error);
+        // toast.error((chapters as { error: string }).error);
+      else {
+        toast.success("Chapter reordered");
       }
     } catch (error) {
       console.log(error);
@@ -116,9 +134,8 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
             <ChaptersList
               items={initialData.chapters}
               onEdit={() => {}}
-              onReorder={() => {}}
-              />
-
+              onReorder={onReorder}
+            />
           </div>
           <p className={cn(`text-xs text-muted-foreground`, {})}>
             Drag and drop to reorder the chapters

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useMemo } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { createSwapy, utils, Swapy } from "swapy";
 import { Grip, Pencil } from "lucide-react";
 import type { Chapter } from "@prisma/client";
@@ -25,16 +26,46 @@ export const ChaptersList = ({
   const [slotItemMap, setSlotItemMap] = useState(
     utils.initSlotItemMap(items, "id")
   );
+
   const slottedItems = useMemo(
     () => utils.toSlottedItems(items, "id", slotItemMap),
     [items, slotItemMap]
   );
-  console.log("🚀 ~ slottedItems:", slottedItems);
+
+  const debouncedReorder = useDebouncedCallback((updatedOrderedChapters) => {
+    onReorder(updatedOrderedChapters);
+  }, 2000);
+
+  useEffect(() => {
+    const oldOrderedChapters = items.map(({ id }, index) => {
+      return {
+        id,
+        position: index + 1,
+      };
+    });
+    const updatedOrderedChapters = slottedItems.map(({ item }, index) => {
+      return {
+        id: item?.id!,
+        position: index + 1,
+      };
+    });
+
+    // Saving initial API CALLS
+    if (
+      JSON.stringify(oldOrderedChapters) ===
+      JSON.stringify(updatedOrderedChapters)
+    ) {
+      return;
+    }
+
+    // Trigger the debounced API call
+    debouncedReorder(updatedOrderedChapters);
+  }, [slottedItems, items, debouncedReorder]);
 
   // On mounted
   useEffect(() => {
-    // if (!containerRef.current) return;
-    swapyRef.current = createSwapy(containerRef.current!, {
+    if (!containerRef.current) return;
+    swapyRef.current = createSwapy(containerRef.current, {
       manualSwap: true,
     });
 

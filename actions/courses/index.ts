@@ -99,3 +99,38 @@ export const createChapter = async (courseId: string, data: any) => {
     return returnError("Something went wrong");
   }
 };
+
+export const updateChaptersPosition = async ({
+  courseId,
+  data,
+}: {
+  courseId: string;
+  data: { id: string; position: number }[];
+}) => {
+  console.log("🚀 ~ courseId:", courseId);
+  try {
+    let promises = [];
+    for (const item of data) {
+      const task = db.chapter.update({
+        where: {
+          id: item.id,
+        },
+        data: {
+          position: item.position,
+        },
+      });
+      promises.push(task);
+    }
+
+    const allResponse = await Promise.all(promises);
+
+    // [NOTE] - NO RE-VALIDATIOJN ON PURPOSE
+    // No Revalidation as its already updated in UI
+    // This will case multiple re-renders
+
+    // revalidatePath(`/teacher/courses/${courseId}`);
+    return { allResponse };
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
