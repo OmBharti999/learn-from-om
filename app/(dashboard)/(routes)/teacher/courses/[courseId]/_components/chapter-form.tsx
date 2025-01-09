@@ -4,7 +4,9 @@ import { z } from "zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { Loader2, PlusCircle } from "lucide-react";
 import type { Chapter, Course } from "@prisma/client";
 
 import {
@@ -15,12 +17,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Loader2, PlusCircle } from "lucide-react";
-
-import { createChapter, updateChaptersPosition } from "@/actions/courses";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { ChaptersList } from "./chapters-list";
+
+import { cn } from "@/lib/utils";
+import { createChapter, updateChaptersPosition } from "@/actions/courses";
 
 interface Props {
   initialData: Course & { chapters: Chapter[] };
@@ -36,6 +37,7 @@ const formSchema = z.object({
 export const ChapterForm = ({ courseId, initialData }: Props) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,6 +84,10 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  const onEdit = (id: string) => {
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
   };
 
   return (
@@ -142,7 +148,7 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
             {!initialData.chapters.length && "No chapters"}
             <ChaptersList
               items={initialData.chapters}
-              onEdit={() => {}}
+              onEdit={onEdit}
               onReorder={onReorder}
             />
           </div>
