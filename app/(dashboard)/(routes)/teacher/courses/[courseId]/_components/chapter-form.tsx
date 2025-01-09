@@ -20,6 +20,7 @@ import { Pencil, PlusCircle } from "lucide-react";
 import { createChapter } from "@/actions/courses";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { ChaptersList } from "./chapters-list";
 
 interface Props {
   initialData: Course & { chapters: Chapter[] };
@@ -48,7 +49,6 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // console.log("🚀 ~ onSubmit ~ values:", values);
     try {
       const course = await createChapter(courseId, values);
       if ((course as { error: string })?.error)
@@ -113,6 +113,12 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
             })}
           >
             {!initialData.chapters.length && "No chapters"}
+            <ChaptersList
+              items={initialData.chapters}
+              onEdit={() => {}}
+              onReorder={() => {}}
+              />
+
           </div>
           <p className={cn(`text-xs text-muted-foreground`, {})}>
             Drag and drop to reorder the chapters
