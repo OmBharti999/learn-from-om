@@ -15,6 +15,7 @@ import {
   CategoryForm,
   PriceForm,
   AttachmentForm,
+  ChapterForm,
 } from "./_components";
 
 import { db } from "@/lib/db";
@@ -138,7 +139,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Course chapters</h2>
             </div>
-            <div className="">[todo] chapters</div>
+            <ChapterForm initialData={course} courseId={courseId} />
           </div>
           <div className="">
             <div className="flex items-center gap-x-2">
