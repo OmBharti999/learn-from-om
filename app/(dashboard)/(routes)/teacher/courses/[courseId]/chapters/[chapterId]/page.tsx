@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
@@ -82,6 +82,12 @@ const ChapterEditPage = async ({
               courseId={courseId}
               initialData={chapter}
             />
+          </div>
+        </div>
+        <div className="">
+          <div className="flex items-center gap-x-2">
+            <IconBadge icon={Video} />
+            <h2 className="text-xl">Add a video</h2>
           </div>
         </div>
       </div>
