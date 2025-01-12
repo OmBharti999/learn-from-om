@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { returnError } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
+import { Course } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -11,7 +12,7 @@ import { revalidatePath } from "next/cache";
  * @param data -> data to update
  * @returns -> course
  */
-export const updateCourse = async (id: string, data: any) => {
+export const updateCourse = async (id: string, data: Partial<Course>) => {
   try {
     const { userId } = await auth();
     if (!userId) {
