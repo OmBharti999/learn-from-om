@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
 
-import { TitleForm } from "./_components";
+import { DescriptionForm, TitleForm } from "./_components";
 
 import { db } from "@/lib/db";
 
@@ -62,6 +62,11 @@ const ChapterEditPage = async ({
               <h2 className="text-xl">Customize your chapter</h2>
             </div>
             <TitleForm
+              chapterId={chapterId}
+              initialData={chapter}
+              courseId={courseId}
+            />
+            <DescriptionForm
               chapterId={chapterId}
               initialData={chapter}
               courseId={courseId}
