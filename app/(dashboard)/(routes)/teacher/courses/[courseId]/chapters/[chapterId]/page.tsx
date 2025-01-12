@@ -72,6 +72,11 @@ const ChapterEditPage = async ({
               courseId={courseId}
             />
           </div>
+          <div className="">
+            <div className="flex items-center gap-x-2">
+              <h2 className="text-xl">Access Settings</h2>
+            </div>
+          </div>
         </div>
       </div>
     </div>
