@@ -1,7 +1,9 @@
 "use client";
 
+import React, { useMemo } from "react";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+// import Quill from "react-quill";
+// const DynamicQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 import "react-quill/dist/quill.snow.css";
 
@@ -11,14 +13,15 @@ interface Props {
 }
 
 export const Editor = ({ onChange, value }: Props) => {
-  const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
+  const DynamicQuill = useMemo(
+    () => dynamic(() => import("react-quill-new"), { ssr: false }),
     []
   );
 
+  if (!document) return <textarea id="editor-fallback" />;
   return (
     <div className="bg-white">
-      <ReactQuill theme="snow" value={value} onChange={onChange} />
+      <DynamicQuill theme="snow" value={value} onChange={onChange} />
     </div>
   );
 };
