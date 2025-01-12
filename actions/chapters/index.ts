@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db";
 import { returnError } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
