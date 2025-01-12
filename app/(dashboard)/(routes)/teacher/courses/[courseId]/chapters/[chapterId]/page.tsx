@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { ArrowLeft, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
 
-import { DescriptionForm, TitleForm } from "./_components";
+import { AccessForm, DescriptionForm, TitleForm } from "./_components";
 
 import { db } from "@/lib/db";
 
@@ -74,8 +74,14 @@ const ChapterEditPage = async ({
           </div>
           <div className="">
             <div className="flex items-center gap-x-2">
+              <IconBadge icon={Eye} />
               <h2 className="text-xl">Access Settings</h2>
             </div>
+            <AccessForm
+              chapterId={chapterId}
+              courseId={courseId}
+              initialData={chapter}
+            />
           </div>
         </div>
       </div>
