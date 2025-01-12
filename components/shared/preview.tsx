@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 
-import "react-quill/dist/quill.bubble.css";
+import "react-quill-new/dist/quill.bubble.css";
 
 interface Props {
   value: string;
@@ -11,7 +11,7 @@ interface Props {
 
 export const Preview = ({ value }: Props) => {
   const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
+    () => dynamic(() => import("react-quill-new"), { ssr: false }),
     []
   );
 

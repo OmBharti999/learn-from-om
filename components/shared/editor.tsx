@@ -2,10 +2,8 @@
 
 import React, { useMemo } from "react";
 import dynamic from "next/dynamic";
-// import Quill from "react-quill";
-// const DynamicQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 
 interface Props {
   onChange: (value: string) => void;

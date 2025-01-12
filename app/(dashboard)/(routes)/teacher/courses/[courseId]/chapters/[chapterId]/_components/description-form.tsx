@@ -20,6 +20,7 @@ import { Pencil } from "lucide-react";
 import { updateChapter } from "@/actions/chapters";
 import { cn } from "@/lib/utils";
 import { Editor } from "@/components/shared/editor";
+import { Preview } from "@/components/shared/preview";
 
 interface Props {
   initialData: Chapter;
@@ -111,13 +112,17 @@ export const DescriptionForm = ({
           </form>
         </Form>
       ) : (
-        <p
+        <div
           className={cn(`text-sm mt-2`, {
             "text-slate-500 italic": !initialData.description,
           })}
         >
-          {initialData.description ?? "No description"}
-        </p>
+          {initialData.description ? (
+            <Preview value={initialData.description} />
+          ) : (
+            "No description"
+          )}
+        </div>
       )}
     </div>
   );
