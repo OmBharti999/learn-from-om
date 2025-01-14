@@ -4,7 +4,12 @@ import { redirect } from "next/navigation";
 
 import { IconBadge } from "@/components/shared/icon-badge";
 
-import { AccessForm, DescriptionForm, TitleForm } from "./_components";
+import {
+  AccessForm,
+  DescriptionForm,
+  TitleForm,
+  VideoForm,
+} from "./_components";
 
 import { db } from "@/lib/db";
 
@@ -89,6 +94,11 @@ const ChapterEditPage = async ({
             <IconBadge icon={Video} />
             <h2 className="text-xl">Add a video</h2>
           </div>
+          <VideoForm
+            chapterId={chapterId}
+            courseId={courseId}
+            initialData={chapter}
+          />
         </div>
       </div>
     </div>
