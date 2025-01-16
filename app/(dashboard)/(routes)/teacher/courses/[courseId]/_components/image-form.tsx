@@ -18,6 +18,7 @@ interface Props {
   courseId: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formSchema = z.object({
   imageUrl: z
     .string()

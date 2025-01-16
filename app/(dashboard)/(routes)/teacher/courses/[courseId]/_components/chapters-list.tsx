@@ -45,7 +45,7 @@ export const ChaptersList = ({
     });
     const updatedOrderedChapters = slottedItems.map(({ item }, index) => {
       return {
-        id: item?.id!,
+        id: item?.id,
         position: index + 1,
       };
     });
@@ -87,7 +87,7 @@ export const ChaptersList = ({
         slotItemMap,
         setSlotItemMap
       ),
-    [items]
+    [items, slotItemMap]
   );
 
   return (
@@ -126,7 +126,9 @@ export const ChaptersList = ({
                     {chapter?.isPublished ? "Published" : "Draft"}
                   </Badge>
                   <Pencil
-                    onClick={() => onEdit(chapter?.id!)}
+                    onClick={() => {
+                      if (chapter?.id) onEdit(chapter.id);
+                    }}
                     className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
                   />
                 </div>
