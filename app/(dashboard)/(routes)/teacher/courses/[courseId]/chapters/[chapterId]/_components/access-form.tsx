@@ -1,18 +1,12 @@
-// import React from 'react'
-
-// export const AccessForm = () => {
-//   return (
-//     <div>AccessForm</div>
-//   )
-// }
 "use client";
 
 import { z } from "zod";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Pencil } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { Chapter, Course } from "@prisma/client";
+import type { Chapter } from "@prisma/client";
 
 import {
   Form,
@@ -23,13 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import { updateChapter } from "@/actions/chapters";
 import { cn } from "@/lib/utils";
-import { Editor } from "@/components/shared/editor";
-import { Preview } from "@/components/shared/preview";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface Props {
   initialData: Chapter;
@@ -38,12 +29,6 @@ interface Props {
 }
 
 const formSchema = z.object({
-  //   description: z
-  //     .string()
-  //     .min(1, {
-  //       message: "Description is required",
-  //     })
-  //     .optional(),
   isFree: z.boolean().default(false),
 });
 

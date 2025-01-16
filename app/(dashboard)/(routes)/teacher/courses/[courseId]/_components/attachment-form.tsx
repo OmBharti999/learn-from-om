@@ -1,27 +1,22 @@
 "use client";
 
 import { z } from "zod";
-import { Delete, File, ImageIcon, Pencil, PlusCircle, X } from "lucide-react";
+import { File, PlusCircle, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
 import type { Attachment, Course } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUploader } from "@/components/shared/file-uploader";
 
-import {
-  addAttachment,
-  deleteAttachment,
-  updateCourse,
-} from "@/actions/courses";
-import { cn } from "@/lib/utils";
+import { addAttachment, deleteAttachment } from "@/actions/courses";
 
 interface Props {
   initialData: Course & { attachments: Attachment[] };
   courseId: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formSchema = z.object({
   url: z.string().min(1, {
     message: "Attachment is required",
