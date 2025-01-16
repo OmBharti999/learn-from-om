@@ -1,13 +1,15 @@
 "use client";
 
-import { deleteChapter } from "@/actions/chapters";
-import { ConfirmModal } from "@/components/modals";
-import { Button } from "@/components/ui/button";
 import { Chapter } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+
+import { ConfirmModal } from "@/components/modals";
+import { Button } from "@/components/ui/button";
+
+import { deleteChapter, publishChapter } from "@/actions/chapters";
 
 interface Props {
   courseId: string;
@@ -25,6 +27,32 @@ export const ChapterActions = ({
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const onClick = async () => {
+    try {
+      setIsLoading(true);
+      const chapter = await publishChapter({
+        chapterId,
+        courseId,
+        state: !isPublished,
+      });
+      if ((chapter as { error?: string })?.error) {
+        toast.error((chapter as { error: string })?.error!);
+      }
+
+      if ((chapter as Chapter)?.id) {
+        toast.success(
+          (chapter as Chapter).isPublished
+            ? "Chapter published"
+            : "Chapter unpublished"
+        );
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -51,7 +79,7 @@ export const ChapterActions = ({
   return (
     <div className="flex items-center gap-x-2">
       <Button
-        onClick={() => {}}
+        onClick={onClick}
         disabled={disabled || isLoading}
         size={"sm"}
         variant={"outline"}

@@ -134,3 +134,72 @@ export const deleteChapter = async ({
     return returnError("Something went wrong");
   }
 };
+
+export const publishChapter = async ({
+  chapterId,
+  courseId,
+  state = false,
+}: {
+  chapterId: string;
+  courseId: string;
+  state: boolean;
+}) => {
+  try {
+    const chapter = await db.chapter.findUnique({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+      include: {
+        muxData: {
+          select: {
+            assetId: true,
+          },
+        },
+      },
+    });
+    let publishedChapter: Chapter | null = null;
+    if (!state) {
+      // console.log("$$$ UNPUBLISHING $$$");
+      publishedChapter = await db.chapter.update({
+        where: {
+          id: chapterId,
+          courseId,
+        },
+        data: {
+          isPublished: state,
+        },
+      });
+    } else {
+      // console.log("--- PUBLISHING ---");
+      if (
+        !chapter ||
+        !chapter.title ||
+        !chapter.description ||
+        !chapter.videoUrl ||
+        !chapter?.muxData?.assetId
+      ) {
+        return returnError("Missing required fields");
+      }
+
+      publishedChapter = await db.chapter.update({
+        where: {
+          id: chapterId,
+          courseId,
+        },
+        data: {
+          isPublished: state,
+        },
+      });
+    }
+
+    if (!publishedChapter) {
+      return returnError("Chapter not found");
+    }
+
+    revalidatePath(`/teacher/courses/${courseId}/chapters/${chapterId}`);
+    return publishedChapter;
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
