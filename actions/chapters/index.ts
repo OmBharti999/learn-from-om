@@ -80,3 +80,29 @@ export const updateChapter = async ({
     return returnError("Something went wrong");
   }
 };
+
+export const deleteChapter = async ({
+  chapterId,
+  courseId,
+}: {
+  chapterId: string;
+  courseId: string;
+}) => {
+  try {
+    const chapter = await db.chapter.delete({
+      where: {
+        id: chapterId,
+        courseId,
+      },
+    });
+
+    if (!chapter) {
+      return returnError("Chapter not found");
+    }
+
+    revalidatePath(`/teacher/courses/${courseId}`);
+    return chapter;
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
