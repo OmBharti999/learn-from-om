@@ -94,10 +94,17 @@ export const deleteChapter = async ({
         id: chapterId,
         courseId,
       },
+      include: {
+        muxData: true,
+      },
     });
 
     if (!chapter) {
       return returnError("Chapter not found");
+    }
+
+    if (chapter?.muxData?.assetId) {
+      await video.assets.delete(chapter?.muxData?.assetId);
     }
 
     revalidatePath(`/teacher/courses/${courseId}`);
