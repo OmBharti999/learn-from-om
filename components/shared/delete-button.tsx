@@ -7,7 +7,7 @@ interface Props {
   onClick: () => void;
 }
 
-export const DeleteButton = ({onClick}: Props) => {
+export const DeleteButton = ({ onClick }: Props) => {
   return (
     <Button
       variant="ghost"
