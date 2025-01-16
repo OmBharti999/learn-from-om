@@ -1,16 +1,15 @@
 "use client";
 
 import { z } from "zod";
-import { ImageIcon, Pencil, PlusCircle, Video } from "lucide-react";
+import { Pencil, PlusCircle, Video } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
+import MuxPlayer from "@mux/mux-player-react/lazy";
 import type { Chapter, MuxData } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUploader } from "@/components/shared/file-uploader";
 
-import { updateCourse } from "@/actions/courses";
 import { cn } from "@/lib/utils";
 import { updateChapter } from "@/actions/chapters";
 
@@ -75,8 +74,11 @@ export const VideoForm = ({ courseId, initialData, chapterId }: Props) => {
       {!isEditing &&
         (initialData.videoUrl ? (
           <div className="relative aspect-video mt-2">
-            Video Uploaded
-            {/* [TODO]: Add a video player */}
+            <MuxPlayer
+              loading="viewport"
+              playbackId={initialData?.muxData?.playbackId || ""}
+              className="h-full w-full"
+            />
           </div>
         ) : (
           <div
