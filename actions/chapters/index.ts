@@ -89,26 +89,47 @@ export const deleteChapter = async ({
   courseId: string;
 }) => {
   try {
-    const chapter = await db.chapter.delete({
+    const deletedChapter = await db.chapter.delete({
       where: {
         id: chapterId,
         courseId,
       },
       include: {
-        muxData: true,
+        muxData: {
+          select: {
+            assetId: true,
+          },
+        },
       },
     });
 
-    if (!chapter) {
+    if (!deletedChapter) {
       return returnError("Chapter not found");
     }
 
-    if (chapter?.muxData?.assetId) {
-      await video.assets.delete(chapter?.muxData?.assetId);
+    if (deletedChapter?.muxData?.assetId) {
+      await video.assets.delete(deletedChapter?.muxData?.assetId);
     }
 
+    const isPublishedChapterInCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+
+    if (!isPublishedChapterInCourse.length) {
+      await db.course.update({
+        where: {
+          id: chapterId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
     revalidatePath(`/teacher/courses/${courseId}`);
-    return chapter;
+    return deletedChapter;
   } catch (error) {
     return returnError("Something went wrong");
   }
