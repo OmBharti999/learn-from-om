@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { Chapter, Course } from "@prisma/client";
+import type { Chapter } from "@prisma/client";
 
 import {
   Form,

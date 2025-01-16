@@ -21,6 +21,7 @@ interface Props {
   chapterId: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formSchema = z.object({
   videoUrl: z.string().min(1),
 });
@@ -37,7 +38,9 @@ export const VideoForm = ({ courseId, initialData, chapterId }: Props) => {
       const course = await updateChapter({
         courseId,
         values,
-        chapterId: initialData.id,
+        chapterId,
+        // [TODO]: CHECK IF ITS WORKING OR NOT
+        // chapterId: initialData.id,
       });
       if ((course as { error: string })?.error)
         toast.error((course as { error: string }).error);

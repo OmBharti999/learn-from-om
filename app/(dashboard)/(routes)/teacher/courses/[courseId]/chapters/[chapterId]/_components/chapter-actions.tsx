@@ -36,7 +36,7 @@ export const ChapterActions = ({
         state: !isPublished,
       });
       if ((chapter as { error?: string })?.error) {
-        toast.error((chapter as { error: string })?.error!);
+        toast.error((chapter as { error: string })?.error);
       }
 
       if ((chapter as Chapter)?.id) {
@@ -46,13 +46,13 @@ export const ChapterActions = ({
             : "Chapter unpublished"
         );
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -62,14 +62,14 @@ export const ChapterActions = ({
       });
 
       if ((chapter as { error?: string })?.error) {
-        toast.error((chapter as { error: string })?.error!);
+        toast.error((chapter as { error: string })?.error);
       }
 
       if ((chapter as Chapter)?.id) {
         toast.success("Chapter deleted successfully.");
         router.push(`/teacher/courses/${courseId}`);
       }
-    } catch (e) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
