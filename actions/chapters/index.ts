@@ -1,10 +1,17 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { returnError } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import Mux from "@mux/mux-node";
+
+import { db } from "@/lib/db";
+import { returnError } from "@/lib/utils";
+
+const { video } = new Mux({
+  tokenId: process.env.MUX_TOKEN_ID,
+  tokenSecret: process.env.MUX_TOKEN_SECRET,
+});
 
 export const updateChapter = async ({
   chapterId,
@@ -28,6 +35,40 @@ export const updateChapter = async ({
       },
       data,
     });
+
+    if (values.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId,
+        },
+      });
+
+      // If user is changing the video, delete the existing asset
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+
+      const asset = await video.assets.create({
+        input: [{ url: values.videoUrl }],
+        playback_policy: ["public"],
+        test: false,
+      });
+
+      // console.log("asset", asset);
+
+      await db.muxData.create({
+        data: {
+          assetId: asset.id,
+          chapterId,
+          playbackId: asset.playback_ids?.[0].id,
+        },
+      });
+    }
 
     if (!course) {
       return returnError("Course not found");
