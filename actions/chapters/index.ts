@@ -81,6 +81,34 @@ export const updateChapter = async ({
   }
 };
 
+const validPublishedChaptersFixer = async ({
+  courseId,
+}: {
+  courseId: string;
+}) => {
+  try {
+    const isPublishedChapterInCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+
+    if (!isPublishedChapterInCourse.length) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const deleteChapter = async ({
   chapterId,
   courseId,
@@ -111,23 +139,8 @@ export const deleteChapter = async ({
       await video.assets.delete(deletedChapter?.muxData?.assetId);
     }
 
-    const isPublishedChapterInCourse = await db.chapter.findMany({
-      where: {
-        courseId,
-        isPublished: true,
-      },
-    });
+    await validPublishedChaptersFixer({ courseId });
 
-    if (!isPublishedChapterInCourse.length) {
-      await db.course.update({
-        where: {
-          id: chapterId,
-        },
-        data: {
-          isPublished: false,
-        },
-      });
-    }
     revalidatePath(`/teacher/courses/${courseId}`);
     return deletedChapter;
   } catch (error) {
@@ -170,6 +183,7 @@ export const publishChapter = async ({
           isPublished: state,
         },
       });
+      await validPublishedChaptersFixer({ courseId });
     } else {
       // console.log("--- PUBLISHING ---");
       if (
