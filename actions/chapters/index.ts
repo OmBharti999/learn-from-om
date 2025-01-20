@@ -36,6 +36,10 @@ export const updateChapter = async ({
       data,
     });
 
+    if (!course) {
+      return returnError("Course not found");
+    }
+
     if (values.videoUrl) {
       const existingMuxData = await db.muxData.findFirst({
         where: {
@@ -53,6 +57,7 @@ export const updateChapter = async ({
         });
       }
 
+      // This is creating a new asset
       const asset = await video.assets.create({
         input: [{ url: values.videoUrl }],
         playback_policy: ["public"],
@@ -65,13 +70,9 @@ export const updateChapter = async ({
         data: {
           assetId: asset.id,
           chapterId,
-          playbackId: asset.playback_ids?.[0].id,
+          playbackId: asset.playback_ids?.[0]?.id,
         },
       });
-    }
-
-    if (!course) {
-      return returnError("Course not found");
     }
 
     revalidatePath(`/teacher/courses/${courseId}/chapters/${chapterId}`);

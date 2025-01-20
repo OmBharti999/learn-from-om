@@ -16,7 +16,7 @@ export const ourFileRouter = {
   courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(async () => await handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("🚀 ~ .onUploadComplete ~ file:", file)
+      console.log("🚀 ~ .onUploadComplete ~ IMAGE:", file);
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
@@ -26,7 +26,10 @@ export const ourFileRouter = {
     .onUploadComplete(async () => {}),
   chapterVideo: f({ video: { maxFileSize: "512GB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
-    .onUploadComplete(async () => {}),
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("🚀 ~ .onUploadComplete ~ VIDEO:", file);
+      return { uploadedBy: metadata.userId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
