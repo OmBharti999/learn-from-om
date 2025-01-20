@@ -1,10 +1,12 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { returnError } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
+import Mux from "@mux/mux-node";
 import { Course } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+
+import { db } from "@/lib/db";
+import { returnError } from "@/lib/utils";
 
 /**
  *
@@ -131,6 +133,142 @@ export const updateChaptersPosition = async ({
 
     // revalidatePath(`/teacher/courses/${courseId}`);
     return { allResponse };
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
+
+/**
+ * This function handles publishing or unpublishing a chapter when the user clicks the respective button on the chapter edit page.
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.courseId - The ID of the course to which the chapter belongs.
+ * @param {boolean} params.state - The desired publish state of the chapter. True for publish, false for unpublish.
+ * @returns {Promise<Chapter | { error: string }>} - Returns the updated chapter object or an error message.
+ */
+
+export const publishCourse = async ({
+  courseId,
+  state = false,
+}: {
+  courseId: string;
+  state: boolean;
+}) => {
+  try {
+    const course = await db.course.findUnique({
+      where: {
+        id: courseId,
+      },
+      include: {
+        chapters: {
+          include: {
+            muxData: {
+              select: {
+                assetId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!course) {
+      return returnError("Course not found");
+    }
+
+    let publishedCourse: Course | null = null;
+    if (!state) {
+      // console.log("$$$ UNPUBLISHING $$$");
+      // UNPUBLISH PART NO NEED TO CHECK DIRECTLY MAKE IT UNPUBLISH
+      publishedCourse = await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: state,
+        },
+      });
+    } else {
+      const hasPublishedChapter = course.chapters.some(
+        (chapter) => chapter.isPublished
+      );
+      if (
+        !course?.title ||
+        !course?.description ||
+        !course?.imageUrl ||
+        !course?.categoryId ||
+        !hasPublishedChapter
+      ) {
+        return returnError("Missing required fields");
+      }
+      // console.log("--- PUBLISHING ---");
+
+      publishedCourse = await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: state,
+        },
+      });
+    }
+    revalidatePath(`/teacher/courses/${courseId}`);
+    return publishedCourse;
+  } catch (error) {
+    return returnError("Something went wrong");
+  }
+};
+
+// deleteCourse
+
+export const deleteCourse = async ({ courseId }: { courseId: string }) => {
+  console.log("🚀 ~ deleteCourse ~ courseId:", courseId);
+  try {
+    const { video } = new Mux({
+      tokenId: process.env.MUX_TOKEN_ID,
+      tokenSecret: process.env.MUX_TOKEN_SECRET,
+    });
+
+    const course = await db.course.findUnique({
+      where: {
+        id: courseId,
+      },
+      include: {
+        chapters: {
+          include: {
+            muxData: {
+              select: {
+                assetId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    console.log("🚀 ~ deleteCourse ~ course:", course);
+
+    if (!course) {
+      return returnError("Course not found");
+    }
+
+    const muxPromises: Promise<any>[] = [];
+    course?.chapters?.forEach(async (chapter) => {
+      if (chapter?.muxData?.assetId) {
+        await video.assets.delete(chapter?.muxData?.assetId);
+      }
+    });
+    // Waiting for all mux data delete
+    // try {
+    //   await Promise.all(muxPromises);
+    // } catch (error) {
+    //   console.log("PROMISE ERROR", error);
+    // }
+
+    const deletedCourse = await db.course.delete({
+      where: {
+        id: courseId,
+      },
+    });
+    revalidatePath(`/teacher/courses/${courseId}`);
+    return deletedCourse;
   } catch (error) {
     return returnError("Something went wrong");
   }

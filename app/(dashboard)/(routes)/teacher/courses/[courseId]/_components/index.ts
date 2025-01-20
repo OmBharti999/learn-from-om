@@ -6,3 +6,4 @@ export { PriceForm } from "./price-form";
 export { AttachmentForm } from "./attachment-form";
 export { ChapterForm } from "./chapter-form";
 export { ChaptersList } from "./chapters-list";
+export { Actions } from "./actions";
