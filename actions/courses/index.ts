@@ -235,10 +235,7 @@ export const publishCourse = async ({
   }
 };
 
-// deleteCourse
-
 export const deleteCourse = async ({ courseId }: { courseId: string }) => {
-  console.log("🚀 ~ deleteCourse ~ courseId:", courseId);
   try {
     const { video } = new Mux({
       tokenId: process.env.MUX_TOKEN_ID,
@@ -261,7 +258,6 @@ export const deleteCourse = async ({ courseId }: { courseId: string }) => {
         },
       },
     });
-    console.log("🚀 ~ deleteCourse ~ course:", course);
 
     if (!course) {
       return returnError("Course not found");
