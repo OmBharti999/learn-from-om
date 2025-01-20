@@ -57,7 +57,11 @@ import { db } from "@/lib/db";
 //   }
 // };
 
-const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+const CourseIdPage = async ({
+  params,
+}: {
+  params: Promise<{ courseId: string }>;
+}) => {
   // await is needed getting warning about asynchronous access of `params.courseId`
   const { courseId } = await params;
   const { userId } = await auth();

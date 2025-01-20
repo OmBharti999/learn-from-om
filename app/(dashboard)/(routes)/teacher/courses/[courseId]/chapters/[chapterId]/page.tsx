@@ -18,7 +18,7 @@ import { Banner } from "@/components/shared/banner";
 const ChapterEditPage = async ({
   params,
 }: {
-  params: { chapterId: string; courseId: string };
+  params: Promise<{ chapterId: string; courseId: string }>;
 }) => {
   // await is needed getting warning about asynchronous access of `params.courseId`
   const { chapterId, courseId } = await params;
