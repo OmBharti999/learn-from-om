@@ -149,6 +149,15 @@ export const deleteChapter = async ({
   }
 };
 
+/**
+ * This function handles publishing or unpublishing a chapter when the user clicks the respective button on the chapter edit page.
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.chapterId - The ID of the chapter to be published or unpublished.
+ * @param {string} params.courseId - The ID of the course to which the chapter belongs.
+ * @param {boolean} params.state - The desired publish state of the chapter. True for publish, false for unpublish.
+ * @returns {Promise<Chapter | { error: string }>} - Returns the updated chapter object or an error message.
+ */
+
 export const publishChapter = async ({
   chapterId,
   courseId,
