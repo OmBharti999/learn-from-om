@@ -87,7 +87,7 @@ export const ChaptersList = ({
         slotItemMap,
         setSlotItemMap
       ),
-    [items, slotItemMap]
+    [items]
   );
 
   return (
@@ -129,7 +129,7 @@ export const ChaptersList = ({
                     onClick={() => {
                       if (chapter?.id) onEdit(chapter.id);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+                    className="w-5 h-5 cursor-pointer hover:opacity-75 transition"
                   />
                 </div>
               </div>
