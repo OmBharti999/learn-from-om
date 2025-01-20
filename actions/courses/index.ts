@@ -158,14 +158,32 @@ export const publishCourse = async ({
       where: {
         id: courseId,
       },
-      include: {
+      // include: {
+      //   chapters: {
+      //     include: {
+      //       muxData: {
+      //         select: {
+      //           assetId: true,
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
+      select: {
+        id: true,
+        isPublished: true,
+        title: true,
+        description: true,
+        imageUrl: true,
+        categoryId: true,
         chapters: {
-          include: {
+          select: {
             muxData: {
               select: {
                 assetId: true,
               },
             },
+            isPublished: true,
           },
         },
       },
