@@ -11,11 +11,11 @@ import type { Chapter } from "@prisma/client";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -92,12 +92,13 @@ export const AccessForm = ({ courseId, initialData, chapterId }: Props) => {
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      id="free"
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormDescription>
+                    <Label htmlFor="free">
                       Make this chapter free for all users
-                    </FormDescription>
+                    </Label>
                   </div>
                   <FormMessage />
                 </FormItem>

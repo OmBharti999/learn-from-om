@@ -183,7 +183,7 @@ export const publishChapter = async ({
     });
     let publishedChapter: Chapter | null = null;
     if (!state) {
-      // console.log("$$$ UNPUBLISHING $$$");
+      // console.log("$$$ UNPUBLISHING $$$"); // UNPUBLISH PART NO NEED TO CHECK DIRECTLY MAKE IT UNPUBLISH
       publishedChapter = await db.chapter.update({
         where: {
           id: chapterId,
