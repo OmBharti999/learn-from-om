@@ -10,6 +10,7 @@ import { ConfirmModal } from "@/components/modals";
 import { Button } from "@/components/ui/button";
 
 import { deleteCourse, publishCourse } from "@/actions/courses";
+import { useConfettiStore } from "@/hooks/use-confetti";
 
 interface Props {
   courseId: string;
@@ -20,6 +21,7 @@ interface Props {
 export const Actions = ({ courseId, disabled, isPublished }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { onOpen } = useConfettiStore();
 
   const onClick = async () => {
     try {
@@ -38,6 +40,10 @@ export const Actions = ({ courseId, disabled, isPublished }: Props) => {
             ? "Course published"
             : "Course unpublished"
         );
+
+        if ((course as Course).isPublished) {
+          onOpen();
+        }
       }
     } catch {
       toast.error("Something went wrong. Please try again.");
