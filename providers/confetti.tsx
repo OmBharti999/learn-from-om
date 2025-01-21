@@ -1,18 +1,19 @@
 "use client";
 
-import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
+import Confetti from "react-confetti";
 
 import { useConfettiStore } from "@/hooks/use-confetti";
 
 export const ConfettiProvider = () => {
-  const { isOpen } = useConfettiStore();
+  const { isOpen, onClose, onOpen } = useConfettiStore();
 
   if (!isOpen) return null;
   return (
-    <Fireworks
-      autorun={{ speed: 3 }}
+    <Confetti
+      numberOfPieces={500}
+      recycle={false}
+      onConfettiComplete={onClose}
       className="pointer-events-none z-[1000000000000000000000]"
-      
     />
   );
 };
