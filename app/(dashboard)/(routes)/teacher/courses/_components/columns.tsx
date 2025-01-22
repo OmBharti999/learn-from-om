@@ -98,8 +98,6 @@ export const columns: ColumnDef<Course>[] = [
                 <Pencil className="mr-2 h-4 w-4 inline-block " /> Edit
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
