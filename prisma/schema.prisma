@@ -18,10 +18,10 @@ model Course {
   isPublished Boolean @default(false)
 
   categoryId String?
-  Category   Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
 
   attachments Attachment[]
-  chapters     Chapter[]
+  chapters    Chapter[]
   purchases   Purchase[]
 
   createdAt DateTime @default(now())
@@ -104,7 +104,6 @@ model Purchase {
 model StripeCustomer {
   id     String @id @default(uuid())
   userId String @unique
-
 
   stripeCustomerId String @unique
 
