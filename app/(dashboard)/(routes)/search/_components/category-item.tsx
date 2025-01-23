@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+// import queryString from "query-string";
 import { useCallback } from "react";
 import { IconType } from "react-icons/lib";
+
+import { cn } from "@/lib/utils";
 
 interface Props {
   label: string;
@@ -12,7 +14,6 @@ interface Props {
 }
 export const CategoryItem = ({ label, icon: Icon, value }: Props) => {
   const pathname = usePathname();
-  //   console.log("🚀 ~ CategoryItem ~ pathname:", pathname);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -20,9 +21,6 @@ export const CategoryItem = ({ label, icon: Icon, value }: Props) => {
   const currentTitle = searchParams.get("title");
 
   const isSelected = currentCategoryId === value;
-  //   --------------------------------------------------------------
-  console.log("----------------------------------------------");
-  console.log("🚀 ~ CategoryItem ~ isSelected:", isSelected);
 
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
@@ -34,6 +32,24 @@ export const CategoryItem = ({ label, icon: Icon, value }: Props) => {
     else params.set("categoryId", value as string);
     return params.toString();
   }, [searchParams]);
+
+  // const onClickSimilar = () => {
+  //   const url = queryString.stringifyUrl(
+  //     {
+  //       url: pathname,
+  //       query: {
+  //         title: currentTitle,
+  //         categoryId: isSelected ? null : value,
+  //       },
+  //     },
+  //     {
+  //       skipNull: true,
+  //       skipEmptyString: true,
+  //     }
+  //   );
+
+  //   router.push(url);
+  // };
 
   const onClick = () => {
     router.push(pathname + "?" + createQueryString());
