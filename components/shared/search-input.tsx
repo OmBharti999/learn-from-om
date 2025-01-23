@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "../ui/input";
-import { Categories } from "@/app/(dashboard)/(routes)/search/_components";
 
 export const SearchInput = () => {
   const [value, setValue] = useState("");
