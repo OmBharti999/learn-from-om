@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { Categories } from "./_components";
+import { CoursesList } from "@/components/shared/courses-list";
 import { SearchInput } from "@/components/shared/search-input";
 
 import { db } from "@/lib/db";
@@ -26,6 +27,7 @@ const SearchPage = async (props: SearchPageProps) => {
 
   const { userId } = await auth();
   if (!userId) return redirect("/");
+
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc",
@@ -42,6 +44,7 @@ const SearchPage = async (props: SearchPageProps) => {
       </div>
       <div className="p-6">
         <Categories items={categories} />
+        <CoursesList items={courses} /> 
       </div>
     </>
   );
