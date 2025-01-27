@@ -14,7 +14,7 @@ export const SearchInput = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [debouncedValue, _] = useDebounce(value, 570);
+  const [debouncedValue] = useDebounce(value, 570);
 
   const currenctCategoryId = searchParams.get("categoryId");
 
