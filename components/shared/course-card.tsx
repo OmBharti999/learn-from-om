@@ -25,7 +25,7 @@ export const CourseCard = ({
   title,
 }: Props) => {
   return (
-    <Link href={`/course/${id}`}>
+    <Link href={`/courses/${id}`}>
       <div className="group relative transition overflow-hidden rounded-lg p-3 h-full border border-transparent hover:shadow-sm">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image src={imageUrl} fill alt={title} className="object-cover" />
