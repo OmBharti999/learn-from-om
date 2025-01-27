@@ -1,7 +1,6 @@
 "use client";
 
 import type { Category } from "@prisma/client";
-import { Music } from "lucide-react";
 import {
   FcOldTimeCamera,
   FcEngineering,
