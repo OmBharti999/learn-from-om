@@ -154,7 +154,7 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
             />
           </div>
           <p className={cn(`text-xs text-muted-foreground`, {})}>
-            Drag and drop to reorder the chapters
+            Double Tap hold to Drag and drop to reorder the chapters
           </p>
         </>
       )}

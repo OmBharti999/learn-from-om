@@ -69,6 +69,7 @@ export const ChaptersList = ({
     // Initialize Swapy with basic config
     swapyRef.current = createSwapy(containerRef.current, {
       manualSwap: true,
+      dragOnHold: true,
     });
 
     swapyRef.current.onSwap((event) => {
@@ -93,8 +94,6 @@ export const ChaptersList = ({
   );
 
   const handleEdit = (e: React.MouseEvent, chapterId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
     if (!chapterId) {
       console.warn("No chapter ID provided for edit action");
       return;
@@ -124,6 +123,7 @@ export const ChaptersList = ({
                       "border-r-sky-200 hover:bg-sky-100": chapter?.isPublished,
                     }
                   )}
+                  // data-swapy-handle
                 >
                   <Grip className="w-5 h-5" />
                 </div>
