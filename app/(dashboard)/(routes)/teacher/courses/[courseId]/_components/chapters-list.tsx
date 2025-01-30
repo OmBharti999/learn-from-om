@@ -65,6 +65,8 @@ export const ChaptersList = ({
   // On mounted
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Initialize Swapy with basic config
     swapyRef.current = createSwapy(containerRef.current, {
       manualSwap: true,
     });
@@ -90,7 +92,9 @@ export const ChaptersList = ({
     [items]
   );
 
-  const handleEdit = (chapterId: string) => {
+  const handleEdit = (e: React.MouseEvent, chapterId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!chapterId) {
       console.warn("No chapter ID provided for edit action");
       return;
@@ -134,7 +138,7 @@ export const ChaptersList = ({
                     {chapter?.isPublished ? "Published" : "Draft"}
                   </Badge>
                   <button
-                    onClick={() => chapter?.id && handleEdit(chapter.id)}
+                    onClick={(e) => chapter?.id && handleEdit(e, chapter.id)}
                     className="p-1 hover:bg-slate-300 rounded transition"
                     aria-label={`Edit ${chapter?.title}`}
                   >
