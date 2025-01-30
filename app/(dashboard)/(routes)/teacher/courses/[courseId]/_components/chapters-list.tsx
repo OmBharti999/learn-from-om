@@ -90,6 +90,14 @@ export const ChaptersList = ({
     [items]
   );
 
+  const handleEdit = (chapterId: string) => {
+    if (!chapterId) {
+      console.warn("No chapter ID provided for edit action");
+      return;
+    }
+    onEdit(chapterId);
+  };
+
   return (
     <div ref={containerRef}>
       <div className="chapters">
@@ -125,12 +133,13 @@ export const ChaptersList = ({
                   >
                     {chapter?.isPublished ? "Published" : "Draft"}
                   </Badge>
-                  <Pencil
-                    onClick={() => {
-                      if (chapter?.id) onEdit(chapter.id);
-                    }}
-                    className="w-5 h-5 cursor-pointer hover:opacity-75 transition"
-                  />
+                  <button
+                    onClick={() => chapter?.id && handleEdit(chapter.id)}
+                    className="p-1 hover:bg-slate-300 rounded transition"
+                    aria-label={`Edit ${chapter?.title}`}
+                  >
+                    <Pencil className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>
