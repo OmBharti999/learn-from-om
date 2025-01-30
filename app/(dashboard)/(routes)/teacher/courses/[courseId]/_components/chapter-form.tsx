@@ -41,7 +41,7 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { title: undefined },
+    defaultValues: { title: "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -144,6 +144,7 @@ export const ChapterForm = ({ courseId, initialData }: Props) => {
             className={cn("text-sm mt-2", {
               "text-slate-500 italic": !initialData.chapters.length,
             })}
+            style={{ minHeight: `${initialData.chapters.length * 60}px` }}
           >
             {!initialData.chapters.length && "No chapters"}
             <ChaptersList
