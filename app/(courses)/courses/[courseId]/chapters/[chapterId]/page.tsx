@@ -5,6 +5,7 @@ import { Banner } from "@/components/shared/banner";
 import { VideoPlayer } from "./_components/video-player";
 
 import { getChapters } from "@/actions/chapters/get-chapters";
+import { CourseEnrollButton } from "./_components/course-enroll-button";
 
 const ChapterIdPage = async ({
   params,
@@ -62,6 +63,18 @@ const ChapterIdPage = async ({
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}
           />
+        </div>
+        <div className="">
+          <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+            <h2 className="text-2xl mb-2 font-semibold">{chapter.title}</h2>
+            {purchase ? (
+              <div className="flex items-center gap-x-2 text-slate-500 text-sm md:text-base ml-auto">
+                todo
+              </div>
+            ) : (
+              <CourseEnrollButton courseId={courseId} price={course.price!} />
+            )}
+          </div>
         </div>
       </div>
     </div>
