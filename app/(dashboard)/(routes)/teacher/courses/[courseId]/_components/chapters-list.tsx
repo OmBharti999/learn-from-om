@@ -65,8 +65,11 @@ export const ChaptersList = ({
   // On mounted
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Initialize Swapy with basic config
     swapyRef.current = createSwapy(containerRef.current, {
       manualSwap: true,
+      dragOnHold: true,
     });
 
     swapyRef.current.onSwap((event) => {
@@ -90,6 +93,14 @@ export const ChaptersList = ({
     [items]
   );
 
+  const handleEdit = (e: React.MouseEvent, chapterId: string) => {
+    if (!chapterId) {
+      console.warn("No chapter ID provided for edit action");
+      return;
+    }
+    onEdit(chapterId);
+  };
+
   return (
     <div ref={containerRef}>
       <div className="chapters">
@@ -112,6 +123,7 @@ export const ChaptersList = ({
                       "border-r-sky-200 hover:bg-sky-100": chapter?.isPublished,
                     }
                   )}
+                  // data-swapy-handle
                 >
                   <Grip className="w-5 h-5" />
                 </div>
@@ -125,12 +137,13 @@ export const ChaptersList = ({
                   >
                     {chapter?.isPublished ? "Published" : "Draft"}
                   </Badge>
-                  <Pencil
-                    onClick={() => {
-                      if (chapter?.id) onEdit(chapter.id);
-                    }}
-                    className="w-5 h-5 cursor-pointer hover:opacity-75 transition"
-                  />
+                  <button
+                    onClick={(e) => chapter?.id && handleEdit(e, chapter.id)}
+                    className="p-1 hover:bg-slate-300 rounded transition"
+                    aria-label={`Edit ${chapter?.title}`}
+                  >
+                    <Pencil className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>

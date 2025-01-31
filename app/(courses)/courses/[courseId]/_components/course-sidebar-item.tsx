@@ -57,7 +57,7 @@ export const CourseSidebarItem = ({
       </div>
       <div
         className={cn(
-          "ml-auto w-8 opacity-0 border-2 border-slate-700 h-full transition-all",
+          "ml-auto opacity-0 border-2 border-slate-700 h-full transition-all",
           {
             "opacity-100": isActive,
             "border-e-lime-700": isCompleted,
