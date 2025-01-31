@@ -1,11 +1,15 @@
+import Link from "next/link";
+import { File } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { Banner } from "@/components/shared/banner";
 import { VideoPlayer } from "./_components/video-player";
+import { CourseEnrollButton } from "./_components/course-enroll-button";
+import { Separator } from "@/components/ui/separator";
 
 import { getChapters } from "@/actions/chapters/get-chapters";
-import { CourseEnrollButton } from "./_components/course-enroll-button";
+import { Preview } from "@/components/shared/preview";
 
 const ChapterIdPage = async ({
   params,
@@ -75,6 +79,28 @@ const ChapterIdPage = async ({
               <CourseEnrollButton courseId={courseId} price={course.price!} />
             )}
           </div>
+          <Separator />
+          <div className="">
+            <Preview value={chapter.description!} />
+          </div>
+          {!!attachments.length && (
+            <>
+              <Separator />
+              <div className="p-4">
+                {attachments.map(({ id, url, name }) => (
+                  <Link
+                    href={url}
+                    target="_blank"
+                    className="text-sky-700 bg-sky-200 flex items-center border p-3 w-full rounded-md hover:underline"
+                    key={id}
+                  >
+                    <File/>
+                    <p className="line-clamp-1">{name}</p>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
