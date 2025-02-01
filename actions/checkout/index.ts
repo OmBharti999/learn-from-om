@@ -74,8 +74,8 @@ export const purchaseCheckout = async ({ courseId }: { courseId: string }) => {
       customer: stripeCustomer.stripeCustomerId,
       line_items,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/course/${course.id}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/course/${course.id}?canceled=true&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=true&session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
         courseId: course.id,
         userId: user.id,
