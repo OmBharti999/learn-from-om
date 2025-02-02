@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   // Below is Needed to pass the uploadthing route cleark protection
   "/api/uploadthing",
+  "/api/webhook",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
