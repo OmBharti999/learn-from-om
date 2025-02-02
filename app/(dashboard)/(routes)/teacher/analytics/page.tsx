@@ -2,9 +2,9 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { DataCard } from "./_components/data-card";
+import { Chart } from "./_components/chart";
 
 import { getAnalytics } from "@/actions/analytics/get-analytics";
-import { Chart } from "./_components/chart";
 
 const AnalyticsPage = async () => {
   const { sessionClaims } = await auth();
