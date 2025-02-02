@@ -1,13 +1,15 @@
 "use server";
 
+import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
+
 import { db } from "@/lib/db";
 import { returnError } from "@/lib/utils";
-import { auth } from "@clerk/nextjs/server";
 
 export const updateProgress = async ({
   chapterId,
   isCompleted,
-//   courseId,
+  courseId,
 }: {
   chapterId: string;
   courseId: string;
@@ -33,7 +35,7 @@ export const updateProgress = async ({
         isCompleted,
       },
     });
-
+    revalidatePath(`/courses/${courseId}/chapters/${chapterId}`);
     return updatedProgress;
   } catch (error) {
     console.error(

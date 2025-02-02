@@ -1,9 +1,13 @@
 "use client";
 
+import { updateProgress } from "@/actions/progress/update-progress";
+import { useConfettiStore } from "@/hooks/use-confetti";
 import { cn } from "@/lib/utils";
 import MuxPlayer from "@mux/mux-player-react";
 import { Loader2, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface VideoPlayerProps {
   courseId: string;
@@ -25,6 +29,27 @@ export const VideoPlayer = ({
   nextChapter,
 }: VideoPlayerProps) => {
   const [isReady, setIsReady] = useState(false);
+  const router = useRouter();
+  const { onOpen } = useConfettiStore();
+
+  const onEnd = async () => {
+    try {
+      // First time auto redirect to next chapter
+      if (completeOnEnd) {
+        await updateProgress({ chapterId, courseId, isCompleted: true });
+        if (!nextChapter) {
+          onOpen();
+        }
+        toast.success("Progress updated");
+
+        if (nextChapter) {
+          router.push(`/courses/${courseId}/chapters/${nextChapter}`);
+        }
+      }
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <div className="aspect-video relative">
       {!isReady && !isLocked && (
@@ -48,7 +73,7 @@ export const VideoPlayer = ({
             hidden: !isReady,
           })}
           onCanPlay={() => setIsReady(true)}
-          onEnded={() => {}}
+          onEnded={onEnd}
           autoPlay
         />
       )}
