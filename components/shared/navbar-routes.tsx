@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
@@ -17,17 +18,20 @@ export const NavbarRoutes = () => {
   const isCoursesPage = pathname?.includes("/courses");
   const isSearchPage = pathname === "/search";
 
-  const ShowTeacher =()=> isTeacher(userId) ? (
-    <Button size="sm" variant="ghost" asChild>
-      <Link href="/teacher/courses">Teacher Mode</Link>
-    </Button>
-  ) : null;
+  const ShowTeacher = () =>
+    isTeacher(userId) ? (
+      <Button size="sm" variant="ghost" asChild>
+        <Link href="/teacher/courses">Teacher Mode</Link>
+      </Button>
+    ) : null;
 
   return (
     <>
       {isSearchPage && (
         <div className="hidden md:block">
-          <SearchInput />
+          <Suspense>
+            <SearchInput />
+          </Suspense>
         </div>
       )}
       <div className="flex gap-x-2 ml-auto">
