@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { returnError } from "@/lib/utils";
+import { isTeacher } from "@/lib/teacher";
 
 /**
  *
@@ -17,7 +18,7 @@ import { returnError } from "@/lib/utils";
 export const updateCourse = async (id: string, data: Partial<Course>) => {
   try {
     const { userId } = await auth();
-    if (!userId) {
+    if (!userId  || !isTeacher(userId)) {
       return returnError("Unauthorized");
     }
 
