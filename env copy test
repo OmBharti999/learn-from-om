@@ -1,12 +1,28 @@
+# clerk
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_c
 CLERK_SECRET_KEY=sk_test_a
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
-DATABASE_URL=""
 
-# Direct connection to the database. Used for migrations.
+# prisma db secret
+DATABASE_URL=""
+# [Direct connection to the database. Used for migrations.]
 DIRECT_URL=""
-        
+
+# uploadthing
 UPLOADTHING_TOKEN=''
+
+
+# MUX
+MUX_TOKEN_ID=
+MUX_TOKEN_SECRET=
+
+# stripe
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+# nextjs
+NEXT_PUBLIC_APP_URL=https://www.
+NEXT_PUBLIC_TEACHER_ID=
