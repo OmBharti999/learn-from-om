@@ -64,6 +64,7 @@ const ChapterIdPage = async ({
             chapterId={chapterId}
             title={chapter.title}
             nextChapter={nextChapter?.id}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}

@@ -24,6 +24,7 @@ export const CoursesList = ({ items }: Props) => {
             chaptersLength={item.chapters.length}
             price={item.price!}
             progress={item.progress}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             category={item?.category?.name!}
           />
         ))}
