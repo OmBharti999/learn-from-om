@@ -1,6 +1,5 @@
 "use client";
 
-// import { useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconType } from "react-icons/lib";
 import queryString from "query-string";
@@ -55,19 +54,19 @@ export const CategoryItem = ({ label, icon: Icon, value }: Props) => {
   };
 
   return (
-    <button
-      type="button"
-      className={cn(
-        "flex items-center gap-x-1 border border-slate-200 text-sm py-2 px-3 rounded-full hover:border-sky-700 transition",
-        {
-          "border-sky-700 bg-sky-200/20 text-sky-800": isSelected,
-        }
-      )}
-      onClick={onClick}
-    >
-      {Icon && <Icon size={20} />}
+      <button
+        type="button"
+        className={cn(
+          "flex items-center gap-x-1 border border-slate-200 text-sm py-2 px-3 rounded-full hover:border-sky-700 transition",
+          {
+            "border-sky-700 bg-sky-200/20 text-sky-800": isSelected,
+          }
+        )}
+        onClick={onClick}
+      >
+        {Icon && <Icon size={20} />}
 
-      <div className="truncate">{label}</div>
-    </button>
+        <div className="truncate">{label}</div>
+      </button>
   );
 };

@@ -1,6 +1,5 @@
 "use client";
 
-import type { Category } from "@prisma/client";
 import {
   FcOldTimeCamera,
   FcEngineering,
@@ -11,6 +10,9 @@ import {
   FcMultipleDevices,
 } from "react-icons/fc";
 import { IconType } from "react-icons/lib";
+import { Suspense } from "react";
+import type { Category } from "@prisma/client";
+
 import { CategoryItem } from "./category-item";
 
 interface Props {
@@ -29,14 +31,16 @@ const iconMap: Record<Category["name"], IconType> = {
 export const Categories = ({ items }: Props) => {
   return (
     <div className="flex gap-x-2 items-center overflow-x-auto pb-2">
-      {items.map((item) => (
-        <CategoryItem
-          key={item.id}
-          label={item.name}
-          icon={iconMap[item.name]}
-          value={item.id}
-        />
-      ))}
+      <Suspense>
+        {items.map((item) => (
+          <CategoryItem
+            key={item.id}
+            label={item.name}
+            icon={iconMap[item.name]}
+            value={item.id}
+          />
+        ))}
+      </Suspense>
     </div>
   );
 };
