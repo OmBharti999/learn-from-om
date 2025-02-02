@@ -7,6 +7,7 @@ import Mux from "@mux/mux-node";
 
 import { db } from "@/lib/db";
 import { returnError } from "@/lib/utils";
+import { isTeacher } from "@/lib/teacher";
 
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
@@ -24,7 +25,7 @@ export const updateChapter = async ({
 }) => {
   try {
     const { userId } = await auth();
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return returnError("Unauthorized");
     }
     const { isPublished, ...data } = values;
