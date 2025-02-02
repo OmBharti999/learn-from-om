@@ -8,6 +8,6 @@ export default async function TeacherLayout({
   children: React.ReactNode;
 }) {
   const { sessionClaims } = await auth();
-  if (isTeacher(sessionClaims?.sub)) return redirect("/");
+  if (!isTeacher(sessionClaims?.sub)) return redirect("/");
   return <>{children}</>;
 }
