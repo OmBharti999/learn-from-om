@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 
 import { IconBadge } from "@/components/shared/icon-badge";
-import { BookOpen } from "lucide-react";
+import { CourseProgress } from "@/components/shared/course-progress";
+
 import { formatPrice } from "@/lib/format";
 
 interface Props {
@@ -43,21 +45,15 @@ export const CourseCard = ({
               </span>
             </div>
           </div>
-          {
-            progress !== null ? (
-              <div className=""
-              >
-                todd progress compoent
-              </div>
-            ):
-            (
-              <p className="text-md md:text-sm font-medium text-slate-700">
-                {
-                  formatPrice(price)
-                }
-              </p>
-            )
-          }
+          {progress !== null ? (
+            <CourseProgress size="sm" value={progress} varient={
+              progress === 100 ? "success" : "default"
+            }/>
+          ) : (
+            <p className="text-md md:text-sm font-medium text-slate-700">
+              {formatPrice(price)}
+            </p>
+          )}
         </div>
       </div>
     </Link>

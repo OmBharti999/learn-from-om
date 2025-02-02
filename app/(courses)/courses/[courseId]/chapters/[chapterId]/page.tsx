@@ -4,12 +4,13 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { Banner } from "@/components/shared/banner";
+import { Separator } from "@/components/ui/separator";
+import { Preview } from "@/components/shared/preview";
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
-import { Separator } from "@/components/ui/separator";
+import { CourseProgressButton } from "./_components/course-progress-button";
 
 import { getChapters } from "@/actions/chapters/get-chapters";
-import { Preview } from "@/components/shared/preview";
 
 const ChapterIdPage = async ({
   params,
@@ -72,9 +73,12 @@ const ChapterIdPage = async ({
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl mb-2 font-semibold">{chapter.title}</h2>
             {purchase ? (
-              <div className="flex items-center gap-x-2 text-slate-500 text-sm md:text-base ml-auto">
-                todo
-              </div>
+              <CourseProgressButton
+                chapterId={chapterId}
+                courseId={courseId}
+                nextChapterId={nextChapter?.id}
+                isCompleted={!!userProgress?.isCompleted}
+              />
             ) : (
               <CourseEnrollButton courseId={courseId} price={course.price!} />
             )}
@@ -94,7 +98,7 @@ const ChapterIdPage = async ({
                     className="text-sky-700 bg-sky-200 flex items-center border p-3 w-full rounded-md hover:underline"
                     key={id}
                   >
-                    <File/>
+                    <File />
                     <p className="line-clamp-1">{name}</p>
                   </Link>
                 ))}
